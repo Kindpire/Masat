@@ -856,6 +856,7 @@ void testApp::audioRequested(float * output, int bufferSize, int nChannels){
 			mfft.magsToDB();
 			oct.calculate(mfft.magnitudesDB);
 			mfcc.mfcc(mfft.magnitudes, mfccs);
+            
 		}
 		//inverse fft
 		gettimeofday(&callTS,NULL);
