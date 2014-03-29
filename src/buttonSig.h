@@ -244,7 +244,11 @@ public:
         ofColor biggerOutside = ofColor(146, 71, 44, 150);
         ofColor biggerInside = ofColor(204, 99, 69, 150);
         ofColor small = ofColor(100, 45, 40, 150);
-        
+
+//        ofColor biggerOutside = ofColor(0);
+//        ofColor biggerInside = ofColor(0);
+//        ofColor small = ofColor(0);
+
         
         myButton->getRect()->x = pos.x + center.x - myButton->getRect()->width/2;
         myButton->getRect()->y = pos.y + center.y - myButton->getRect()->height/2;

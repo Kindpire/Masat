@@ -219,7 +219,7 @@ void testApp::setup(){
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    sampleRate 			= 8000;
+    //sampleRate 			= 44100;
 	initialBufferSize	= 512;
 	lAudioOut			= new float[initialBufferSize];
 	rAudioOut			= new float[initialBufferSize];
@@ -232,22 +232,26 @@ void testApp::setup(){
 	memset(lAudioIn, 0, initialBufferSize * sizeof(float));
 	memset(rAudioIn, 0, initialBufferSize * sizeof(float));
 	
-    samp.load(ofToDataPath("m1200_01.wav"));
+    samp.load(ofToDataPath("m1200.wav"));
 	samp.getLength();
+    sampleRate = samp.mySampleRate;
+    //int channelNum = samp.myChannels;
+    
     
 	fftSize = 1024;
 	mfft.setup(fftSize, 512, 256);
 	ifft.setup(fftSize, 512, 256);
-	
+    
 	nAverages = 12;
 	oct.setup(sampleRate, fftSize/2, nAverages);
 	
 	mfccs = (double*) malloc(sizeof(double) * 13);
 	mfcc.setup(512, 21, 13, 20, 20000, sampleRate);
     
-	ofxMaxiSettings::setup(sampleRate, 1, initialBufferSize);
+	ofxMaxiSettings::setup(sampleRate, 2, initialBufferSize);
     //ofxMaxiSettings::setup
-	ofSoundStreamSetup(1,1, this, sampleRate, initialBufferSize, 4);
+	ofSoundStreamSetup(2,2, this, sampleRate, initialBufferSize, 4);
+    //ofSoundStreamSetup(<#int nOutputChannels#>, <#int nInputChannels#>, <#ofBaseApp *appPtr#>, <#int sampleRate#>, <#int bufferSize#>, <#int nBuffers#>)
     //ofSoundStreamSet
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //因为ArialUnicode总是报错，因此尝试直接用ofTrueTypeFont看会不会有问题。
@@ -342,7 +346,7 @@ void testApp::draw(){
         masatAudio.AudioDraw(fftSize, mfcc.melBands);
     }
     
-    if (goingChange) {
+    if (goingChange || flag_infoPanel_timetracker_Button || flag_infoPanel_TimeLine_Button) {
         FadeIn();
     }
     else
@@ -478,15 +482,8 @@ void testApp::draw(){
         infoPanel_TimeLine_Button->setVisible(false);
         infoPanel_voltage_Button->setVisible(false);
         infoPanel_timetracker_Button->setVisible(false);
-//        weektimer.stop();
-//        weektimer.timer_count = 0;
-//        PanelDataButton[10].myButton->getColorFill().a = 0;
-//        PanelDataButton[10].ColorButtonFill = ofColor(200, 0);
-//        PanelDataButton[10].ColorButtonHighLight = ofColor(200, 0);
-//        PanelDataButton[10].myButton->setVisible(false);
         for (int i = 0; i < 6; i++) {
             PanelDataButton[i].myButton->getColorFill().a = 20;
-            //PanelDataButton[i].myButton->setVisible(false);
             PanelDataButton[i].ColorButtonFill = ofColor(200, 20);
         }
     }
@@ -500,7 +497,6 @@ void testApp::draw(){
         infoPanel_timetracker_Button->setVisible(false);
         for (int i = 6; i < 9; i++) {
             PanelDataButton[i].myButton->getColorFill().a = 20;
-            //PanelDataButton[i].myButton->setVisible(false);
             PanelDataButton[i].ColorButtonFill = ofColor(200, 20);
         }
     }
@@ -539,8 +535,12 @@ void testApp::draw(){
         infoPanel_onBoardTemperature_Button->setVisible(false);
         infoPanel_timetracker_Button->setVisible(false);
         for (int i = 0; i < 9; i++) {
-            PanelDataButton[i].myButton->getColorFill().a = 20;
-            PanelDataButton[i].ColorButtonFill = ofColor(200, 20);
+            PanelDataButton[i].myButton->getColorFill().a = 0;
+            PanelDataButton[i].ColorCenterButtonHighLight = ofColor(255);
+            PanelDataButton[i].ColorButtonHighLight.a = 0;
+            PanelDataButton[i].ColorButtonFill = ofColor(200, 0);
+            PanelDataButton[i].myButton->setVisible(false);
+            
         }
     }
     if (flag_infoPanel_timetracker_Button) {
@@ -552,8 +552,11 @@ void testApp::draw(){
         infoPanel_onBoardTemperature_Button->setVisible(false);
         infoPanel_TimeLine_Button->setVisible(false);
         for (int i = 0; i < 9; i++) {
-            PanelDataButton[i].myButton->getColorFill().a = 20;
-            PanelDataButton[i].ColorButtonFill = ofColor(200, 20);
+            PanelDataButton[i].myButton->getColorFill().a = 0;
+            PanelDataButton[i].ColorCenterButtonHighLight = ofColor(255);
+            PanelDataButton[i].ColorButtonHighLight.a = 0;
+            PanelDataButton[i].ColorButtonFill = ofColor(200, 0);
+            PanelDataButton[i].myButton->setVisible(false);
         }
     }
 }
@@ -846,7 +849,8 @@ void testApp::audioRequested(float * output, int bufferSize, int nChannels){
 	
     //	static double tm;
 	for (int i = 0; i < bufferSize; i++){
-		wave = samp.play(1.);
+		//wave = samp.play(1.);
+        wave = samp.play();
 		//get fft
 		if (mfft.process(wave)) {
 			mfft.magsToDB();
