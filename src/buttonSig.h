@@ -169,9 +169,9 @@ public:
         
     }
     
-    void draw(float sizeRing_PanelTemperature, float sizeCircle_PanelVoltage) {
-        myButton->getRect()->setWidth(sizeRing_PanelTemperature);
-        myButton->getRect()->setHeight(sizeRing_PanelTemperature);
+    void draw(float sizeCircle_PanelVoltage, float sizeRing_PanelTemperature) {
+        myButton->getRect()->setWidth(sizeCircle_PanelVoltage);
+        myButton->getRect()->setHeight(sizeCircle_PanelVoltage);
         myButton->getRect()->x = pos.x + center.x - myButton->getRect()->width/2;
         myButton->getRect()->y = pos.y + center.y - myButton->getRect()->height/2;
 
@@ -185,22 +185,22 @@ public:
         content.append(buttonName);
         
 
-        if (distcenter < sizeCircle_PanelVoltage/2)
+        if (distcenter < sizeRing_PanelTemperature/2)
         {
             //中心小圆的颜色是在这里定义的。
             ofSetColor(ColorCenterButtonHighLight, ColorButtonHighLight.a);
-            content.append("\nSOLAR ARRAY VOLTAGE\n").append(converFloat(sizeCircle_PanelVoltage));
+            content.append("\nTEMPERATURE\n").append(converFloat(sizeRing_PanelTemperature));
             
         }
         else
         {
             //中心小圆的颜色是在这里定义的。
             ofSetColor(ColorCenterButtonFill, ColorButtonFill.a);
-            content.append("\nTEMPERATURE\n").append(converFloat(sizeRing_PanelTemperature));
+            content.append("\nSOLAR ARRAY VOLTAGE\n").append(converFloat(sizeCircle_PanelVoltage));
         }
 
         
-        centerOne.draw(pos + center, sizeCircle_PanelVoltage, sizeCircle_PanelVoltage);
+        centerOne.draw(pos + center, sizeRing_PanelTemperature, sizeRing_PanelTemperature);
         ofSetColor(0, 0, 0, myButton->getColorFill().a);
         ofLine(pos + center, Hungary + center);
         
@@ -244,11 +244,7 @@ public:
         ofColor biggerOutside = ofColor(146, 71, 44, 150);
         ofColor biggerInside = ofColor(204, 99, 69, 150);
         ofColor small = ofColor(100, 45, 40, 150);
-
-//        ofColor biggerOutside = ofColor(0);
-//        ofColor biggerInside = ofColor(0);
-//        ofColor small = ofColor(0);
-
+        
         
         myButton->getRect()->x = pos.x + center.x - myButton->getRect()->width/2;
         myButton->getRect()->y = pos.y + center.y - myButton->getRect()->height/2;

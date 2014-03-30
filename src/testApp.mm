@@ -297,7 +297,6 @@ void testApp::draw(){
     int miniutes = (int)((time2sec - time1sec)%(24 * 60 * 60)%(60 * 60)/60);
     int seconds = (int)((time2sec - time1sec)%(24 * 60 * 60)%(60 * 60)%60);
     string datashow = converFloat(days).append(" | ").append(converFloat(hours)).append(" : ").append(converFloat(miniutes)).append(" : ").append(converFloat(seconds)).append("");
-    cout<<datashow<<"  "<<days<<"  "<<hours<<"  "<<miniutes<<"  "<<seconds<<"  "<<""<<endl;
     ofBackground(red, green, blue, 255);
 	ofPushStyle();
     ofDisableAlphaBlending();
@@ -346,12 +345,20 @@ void testApp::draw(){
         masatAudio.AudioDraw(fftSize, mfcc.melBands);
     }
     
-    if (goingChange || flag_infoPanel_timetracker_Button || flag_infoPanel_TimeLine_Button) {
-        FadeIn();
+
+    if (goingChange || flag_infoPanel_timetracker_Button || flag_infoPanel_TimeLine_Button || flag_infoPanel_location_Button || flag_infoPanel_onBoardTemperature_Button) {
+        if (flag_infoPanel_onBoardTemperature_Button)
+        {
+            FadeIn2();
+        }
+        else
+        {
+            FadeIn();
+        }
     }
     else
     {
-        FadeOut();
+            FadeOut();
     }
 
     
@@ -466,11 +473,11 @@ void testApp::draw(){
 //    inforPanel_blink->setColorFill(ofColor(255,255,255,255-weektimer.timer_count));
     //inforPanel->setColorFill(ofColor(255,255,255,0));
 
-    ofSetColor(0, 0, 0, 200 - PanelDataButton[0].ColorButtonFill.a);
+    ofSetColor(0, 0, 0, 200 - PanelDataButton[10].ColorButtonFill.a);
+    ofFill();
     //这个地方总是报错
-    //ArialUnicode.drawString(datashow, 465, 15);
+    ArialUnicode.drawString(datashow, 465, 15);
     //verdana.drawString(datashow, 465, 15);
-    //cout<<datashow<<endl;
     //这里添加了infopanel中按钮用来隐藏其他部分的功能。
     //不过在buttonSig中大圆圈里的小圆圈的隐藏还没有搞定，需要在buttonSig的draw里看一下，不过有些奇怪，按理说可以根据按下中间的按钮后隐藏全部分功能来推倒出当初这部分的实现方法。
     if (flag_infoPanel_onBoardTemperature_Button) {
@@ -483,8 +490,15 @@ void testApp::draw(){
         infoPanel_voltage_Button->setVisible(false);
         infoPanel_timetracker_Button->setVisible(false);
         for (int i = 0; i < 6; i++) {
-            PanelDataButton[i].myButton->getColorFill().a = 20;
-            PanelDataButton[i].ColorButtonFill = ofColor(200, 20);
+            //line
+            PanelDataButton[i].myButton->getColorFill().a = 0;
+            //related to insdie somehow
+            PanelDataButton[i].ColorButtonFill = ofColor(200, 0);
+        }
+        for (int i = 6; i < 9; i++) {
+            //line
+            PanelDataButton[i].myButton->getColorFill().a = 200;
+            PanelDataButton[i].ColorButtonFill = ofColor(200, 200);
         }
     }
     if (flag_infoPanel_temperature_Button) {
@@ -495,8 +509,8 @@ void testApp::draw(){
         infoPanel_TimeLine_Button->setVisible(false);
         infoPanel_voltage_Button->setVisible(false);
         infoPanel_timetracker_Button->setVisible(false);
-        for (int i = 6; i < 9; i++) {
-            PanelDataButton[i].myButton->getColorFill().a = 20;
+        for (int i = 0; i < 9; i++) {
+            PanelDataButton[i].myButton->getColorFill().a = 0;
             PanelDataButton[i].ColorButtonFill = ofColor(200, 20);
         }
     }
@@ -510,7 +524,8 @@ void testApp::draw(){
         infoPanel_timetracker_Button->setVisible(false);
         for (int i = 6; i < 9; i++) {
             PanelDataButton[i].myButton->getColorFill().a = 20;
-            PanelDataButton[i].ColorButtonFill = ofColor(200, 20);
+            PanelDataButton[i].myButton->getColorFill().a = 0;
+            PanelDataButton[i].ColorButtonFill = ofColor(200, 0);
         }
     }
     if (flag_infoPanel_location_Button) {
@@ -522,8 +537,8 @@ void testApp::draw(){
         infoPanel_onBoardTemperature_Button->setVisible(false);
         infoPanel_timetracker_Button->setVisible(false);
         for (int i = 0; i < 9; i++) {
-            PanelDataButton[i].myButton->getColorFill().a = 20;
-            PanelDataButton[i].ColorButtonFill = ofColor(200, 20);
+            PanelDataButton[i].myButton->getColorFill().a = 0;
+            PanelDataButton[i].ColorButtonFill = ofColor(200, 0);
         }
     }
     if (flag_infoPanel_TimeLine_Button) {
@@ -536,10 +551,7 @@ void testApp::draw(){
         infoPanel_timetracker_Button->setVisible(false);
         for (int i = 0; i < 9; i++) {
             PanelDataButton[i].myButton->getColorFill().a = 0;
-            PanelDataButton[i].ColorCenterButtonHighLight = ofColor(255);
-            PanelDataButton[i].ColorButtonHighLight.a = 0;
             PanelDataButton[i].ColorButtonFill = ofColor(200, 0);
-            PanelDataButton[i].myButton->setVisible(false);
             
         }
     }
@@ -553,10 +565,7 @@ void testApp::draw(){
         infoPanel_TimeLine_Button->setVisible(false);
         for (int i = 0; i < 9; i++) {
             PanelDataButton[i].myButton->getColorFill().a = 0;
-            PanelDataButton[i].ColorCenterButtonHighLight = ofColor(255);
-            PanelDataButton[i].ColorButtonHighLight.a = 0;
             PanelDataButton[i].ColorButtonFill = ofColor(200, 0);
-            PanelDataButton[i].myButton->setVisible(false);
         }
     }
 }
@@ -856,7 +865,6 @@ void testApp::audioRequested(float * output, int bufferSize, int nChannels){
 			mfft.magsToDB();
 			oct.calculate(mfft.magnitudesDB);
 			mfcc.mfcc(mfft.magnitudes, mfccs);
-            
 		}
 		//inverse fft
 		gettimeofday(&callTS,NULL);

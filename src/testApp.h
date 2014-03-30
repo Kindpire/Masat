@@ -380,6 +380,77 @@ public:
             PanelDataButton[10].ColorButtonHighLight = ofColor(PanelDataButton[10].ColorButtonHighLight, PanelDataButton[10].ColorButtonHighLight.a + 40);
         }
     }
+    
+    void FadeIn2()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (PanelDataButton[i].myButton->isVisible())
+            {
+                if (PanelDataButton[i].myButton->getColorFill().a <= 20 )
+                {
+                    PanelDataButton[i].myButton->setValue(false);
+                    PanelDataButton[i].bDragged = -1;
+                    PanelDataButton[i].myButton->setVisible(false);
+                }
+                else
+                {
+                    PanelDataButton[i].ColorButtonFill = ofColor(PanelDataButton[i].ColorButtonFill, PanelDataButton[i].ColorButtonFill.a - 60);
+                    PanelDataButton[i].myButton->setColorFill(PanelDataButton[i].ColorButtonFill);
+                    PanelDataButton[i].ColorButtonHighLight = ofColor(PanelDataButton[i].ColorButtonHighLight, PanelDataButton[i].ColorButtonHighLight.a - 60);
+                }
+            }
+        }
+        // for button 10, time controller
+        if (PanelDataButton[10].myButton->isVisible())
+        {
+            if (PanelDataButton[10].myButton->getColorFill().a <= 0 ) {
+                PanelDataButton[10].myButton->setValue(false);
+                PanelDataButton[10].bDragged = -1;
+                PanelDataButton[10].myButton->setVisible(false);
+            }
+            else
+            {
+                PanelDataButton[10].ColorButtonFill = ofColor(PanelDataButton[10].ColorButtonFill, PanelDataButton[10].ColorButtonFill.a - 40);
+                PanelDataButton[10].myButton->setColorFill(PanelDataButton[10].ColorButtonFill);
+                PanelDataButton[10].ColorButtonHighLight = ofColor(PanelDataButton[10].ColorButtonHighLight, PanelDataButton[10].ColorButtonHighLight.a - 40);
+            }
+        }
+        
+    }
+    
+    void FadeOut2()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (!PanelDataButton[i].myButton->isVisible())
+            {
+                PanelDataButton[i].myButton->setVisible(true);
+            }
+            
+            if (PanelDataButton[i].myButton->getColorFill().a >= 200 ) {
+            }
+            else
+            {
+                PanelDataButton[i].ColorButtonFill = ofColor(PanelDataButton[i].ColorButtonFill, PanelDataButton[i].ColorButtonFill.a + 60);
+                PanelDataButton[i].myButton->setColorFill(PanelDataButton[i].ColorButtonFill);
+                PanelDataButton[i].ColorButtonHighLight = ofColor(PanelDataButton[i].ColorButtonHighLight, PanelDataButton[i].ColorButtonHighLight.a + 60);
+            }
+        }
+        if (!PanelDataButton[10].myButton->isVisible())
+        {
+            PanelDataButton[10].myButton->setVisible(true);
+        }
+        
+        if (PanelDataButton[10].myButton->getColorFill().a >= 40 ) {
+        }
+        else
+        {
+            PanelDataButton[10].ColorButtonFill = ofColor(PanelDataButton[10].ColorButtonFill, PanelDataButton[10].ColorButtonFill.a + 40);
+            PanelDataButton[10].myButton->setColorFill(PanelDataButton[10].ColorButtonFill);
+            PanelDataButton[10].ColorButtonHighLight = ofColor(PanelDataButton[10].ColorButtonHighLight, PanelDataButton[10].ColorButtonHighLight.a + 40);
+        }
+    }
 };
 
 
